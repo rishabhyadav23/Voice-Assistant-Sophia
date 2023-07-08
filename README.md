@@ -48,5 +48,17 @@
 
   <p>Include some screenshots or GIFs showcasing the app's interface and features to provide a visual representation of the Voice Assistant Sophia project.</p>
 
-  <a href="screenshots/screenshot1.png"><img src="screenshots/screenshot1.png" alt="Screenshot 1"></a>
-  <a href="screenshots/screenshot2.png"><img src="screenshots/screenshot2.png" alt="Screenshot 2"></a>
+ <div style="border: 5px solid; text-align: center;">
+<h5>Screenshot 1</h5>
+<img src="/Screenshot/ss1.jpeg" style="display: inline-block; margin: 0 auto;width:200px" />
+</div>
+
+<div style="border: 5px solid; text-align: center;">
+<h5>Screenshot 2</h5>
+<img src="/Screenshot/ss2.jpeg" style="display: inline-block; margin: 0 auto;width:200px" />
+</div>
+
+<div style="border: 5px solid; text-align: center;">
+<h5>Screenshot 3</h5>
+<img src="/Screenshot/ss3.jpeg" style="display: inline-block; margin: 0 auto;width:200px" />
+</div>
