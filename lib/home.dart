@@ -5,7 +5,7 @@ import 'features_box.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'open_ai_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+//import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animate_do/animate_do.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -23,6 +23,7 @@ class _HomePageState extends State<MyHomePage> {
   String? generatedContent;
   String? generatedImageUrl;
   int delayTime = 200;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -144,15 +145,10 @@ class _HomePageState extends State<MyHomePage> {
                             color: Pallete.mainFontColor,
                             fontSize: generatedContent == null ? 22 : 15,
                             fontFamily: 'Cera Pro'),
-                        child: AnimatedTextKit(
-                          animatedTexts: [
-                            TyperAnimatedText(
-                              speed: const Duration(milliseconds: 70),
-                              generatedContent == null
-                                  ? 'Hello, What Task can i do for you?'
-                                  : generatedContent!,
-                            ),
-                          ],
+                        child: Text(
+                          generatedContent == null
+                              ? 'Hello, What Task can i do for you?'
+                              : generatedContent!,
                         ),
                       ),
                     )),
@@ -221,40 +217,99 @@ class _HomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            ZoomIn(
-              delay: Duration(milliseconds: 4 * delayTime),
-              child: Container(
-                margin: const EdgeInsets.only(
-                  right: 10,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SlideInUp(
+                  delay: Duration(milliseconds: 4 * delayTime),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    width: 270,
+                    height: 55,
+                    child: TextField(
+                      style: const TextStyle(color: Pallete.whiteColor),
+                      controller: _controller,
+                      cursorColor: Pallete.borderColor,
+                      decoration: InputDecoration(
+                        suffixIconColor: Pallete.secondSuggestionBoxColor,
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            if (_controller.text.isNotEmpty) {
+                              _controller.clear();
+                              final speech = await openAIService
+                                  .isPromptAPI(_controller.text.trim());
+                              if (speech.contains('https')) {
+                                generatedImageUrl = speech;
+                                generatedContent = null;
+                                setState(() {});
+                              } else {
+                                generatedImageUrl = null;
+                                generatedContent = speech;
+                                setState(() {});
+                                await systemSpeek(speech);
+                                setState(() {});
+                              }
+                            }
+                          },
+                          icon: Icon(Icons.send),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Pallete.borderColor),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Pallete.borderColor),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        hintText: 'Write something...',
+                        hintStyle: const TextStyle(
+                          color: Pallete.borderColor,
+                          fontFamily: 'Cera Pro',
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                alignment: Alignment.centerRight,
-                child: FloatingActionButton(
-                  backgroundColor: Pallete.secondSuggestionBoxColor,
-                  onPressed: () async {
-                    if (await speechToText.hasPermission &&
-                        speechToText.isNotListening) {
-                      await startListening();
-                    } else if (speechToText.isListening) {
-                      final speech = await openAIService.isPromptAPI(lastWords);
-                      if (speech.contains('https')) {
-                        generatedImageUrl = speech;
-                        generatedContent = null;
-                        setState(() {});
-                      } else {
-                        generatedImageUrl = null;
-                        generatedContent = speech;
-                        setState(() {});
-                        await systemSpeek(speech);
-                      }
-                      await stopListening();
-                    } else {
-                      initSpeechToText();
-                    }
-                  },
-                  child:
-                      Icon(speechToText.isListening ? Icons.stop : Icons.mic),
+                const SizedBox(
+                  width: 10,
                 ),
-              ),
+                ZoomIn(
+                  delay: Duration(milliseconds: 4 * delayTime),
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      right: 10,
+                    ),
+                    alignment: Alignment.centerRight,
+                    child: FloatingActionButton(
+                      backgroundColor: Pallete.secondSuggestionBoxColor,
+                      onPressed: () async {
+                        if (await speechToText.hasPermission &&
+                            speechToText.isNotListening) {
+                          await startListening();
+                        } else if (speechToText.isListening) {
+                          final speech =
+                              await openAIService.isPromptAPI(lastWords);
+                          if (speech.contains('https')) {
+                            generatedImageUrl = speech;
+                            generatedContent = null;
+                            setState(() {});
+                          } else {
+                            generatedImageUrl = null;
+                            generatedContent = speech;
+                            setState(() {});
+                            await systemSpeek(speech);
+                          }
+                          await stopListening();
+                        } else {
+                          initSpeechToText();
+                        }
+                      },
+                      child: Icon(
+                          speechToText.isListening ? Icons.stop : Icons.mic),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
