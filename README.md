@@ -5,12 +5,18 @@
   <h2>Features</h2>
 
   <ul>
-    <li>Voice-based interaction: Users can ask questions or provide commands using their voice, and Sophia will respond with relevant answers.</li>
+    <li>Voice-based interaction: Users can ask questions or provide commands using their voice, and Sophia will respond
+      with relevant answers.</li>
+    <li>Text-based interaction: Users can also ask questions by typing messages in the text box, and Sophia will generate
+      responses accordingly.</li>
     <li>ChatGPT integration: The ChatGPT API is utilized to process user queries and generate appropriate responses.</li>
     <li>Dall-E integration: The Dall-E API is used to generate images based on user inputs or queries.</li>
-    <li>Text-to-speech: Sophia utilizes the flutter_tts library to convert text responses into speech, providing an interactive and user-friendly experience.</li>
-    <li>Animation effects: The animate_do library is employed to add visually appealing animation effects to the user interface.</li>
-    <li>Cross-platform compatibility: The app is developed using Flutter, making it compatible with both Android and iOS devices.</li>
+    <li>Text-to-speech: Sophia utilizes the flutter_tts library to convert text responses into speech, providing an
+      interactive and user-friendly experience.</li>
+    <li>Animation effects: The animate_do library is employed to add visually appealing animation effects to the user
+      interface.</li>
+    <li>Cross-platform compatibility: The app is developed using Flutter, making it compatible with both Android and iOS
+      devices.</li>
   </ul>
 
   <h2>Getting Started</h2>
